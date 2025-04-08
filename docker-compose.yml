@@ -1,0 +1,24 @@
+services:
+  questdb:
+    image: questdb/questdb:${QDB_VERSION:-latest}
+    container_name: ${CONTAINER_NAME:-service_questdb}
+    env_file:
+      - ./.env
+    volumes:
+      - ./questdb-data:/root/.questdb/db
+      - './questdb.conf:/root/.questdb/conf/questdb.conf'
+    ports:
+      - "${QDB_REST_PORT:-9000}:9000"  # REST API
+      - "${QDB_INFLUX_PORT:-9009}:9009"  # InfluxDB Line Protocol
+      - "${QDB_PG_PORT:-8812}:8812"  # PostgreSQL wire protocol
+      - "${QDB_WEB_PORT:-9003}:9003"  # Web Console
+    environment:
+      - QDB_PG_USER=${QDB_PG_USER:-admin}
+      - QDB_PG_PASSWORD=${QDB_PG_PASSWORD:-quest}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 
