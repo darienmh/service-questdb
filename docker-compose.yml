@@ -7,6 +7,7 @@ services:
     volumes:
       - ./questdb-data:/root/.questdb/db
       - ./server.conf:/root/.questdb/conf/server.conf
+      - ./log.conf:/root/.questdb/conf/log.conf
     ports:
       - "${QDB_REST_PORT:-9000}:9000"  # REST API
       - "${QDB_INFLUX_PORT:-9009}:9009"  # InfluxDB Line Protocol
