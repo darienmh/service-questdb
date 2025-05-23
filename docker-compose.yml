@@ -5,7 +5,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./questdb-data:/root/.questdb/db
+      - ./questdb-data:/root/.questdb
     ports:
       - "${QDB_REST_PORT:-9000}:9000"  # REST API
       - "${QDB_INFLUX_PORT:-9009}:9009"  # InfluxDB Line Protocol
