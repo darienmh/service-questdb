@@ -1,37 +1,16 @@
 services:
   questdb:
-    image: questdb/questdb:${QDB_VERSION:-latest}
-    container_name: ${CONTAINER_NAME:-service_questdb}
+    image: questdb/questdb:${QUESTDB_VERSION}
+    container_name: ${CONTAINER_NAME}
     env_file:
       - ./.env
     volumes:
       - ./questdb-data:/root/.questdb/db
-      - ./server.conf:/root/.questdb/conf/server.conf
-      - ./log.conf:/root/.questdb/conf/log.conf
     ports:
       - "${QDB_REST_PORT:-9000}:9000"  # REST API
       - "${QDB_INFLUX_PORT:-9009}:9009"  # InfluxDB Line Protocol
       - "${QDB_PG_PORT:-8812}:8812"  # PostgreSQL wire protocol
       - "${QDB_WEB_PORT:-9003}:9003"  # Web Console
-    environment:
-      - QDB_LOG_W_STDOUT_LEVEL=ERROR
-      - QDB_LOG_W_FILE_LEVEL=ERROR
-      - QDB_LOG_W_HTTP_MIN_LEVEL=ERROR
-      - QDB_SHARED_WORKER_COUNT=${QUESTDB_WORKER_COUNT:-2}
-      - QDB_PG_USER=${QUESTDB_USERNAME:-admin}
-      - QDB_PG_PASSWORD=${QUESTDB_PASSWORD:-quest}
-      # - QDB_TELEMETRY_ENABLED=false              # Disable telemetry
-      # - QDB_HTTP_ENABLED=false # Disable http server gui and rest interface
-      # - QDB_HTTP_BIND_TO=0.0.0.0:9000 # http server
-      # - QDB_HTTP_SECURITY_READONLY=true # HTTP read only mode
-      # - QDB_HTTP_MIN_ENABLED=false # Disable http health server
-      # - QDB_HTTP_MIN_BIND_TO=0.0.0.0:9003 # http health server
-      # - QDB_PG_ENABLED=false # Disable postgresql
-      # - QDB_PG_NET_BIND_TO=0.0.0.0:8812 # postgresql server
-      # - QBD_LINE_TCP_ENABLED=false # Disable influxdb tcp server
-      # - QBD_LINE_TCP_NET_BIND_TO=0.0.0.0:9009 # influxdb tcp server
-      # - QBD_LINE_UDP_ENABLED=false # Disable influxdb udp server
-      # - QBD_LINE_UDP_NET_BIND_TO=0.0.0.0:9009 # influxdb udp server
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000"]
