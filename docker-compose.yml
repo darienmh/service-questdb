@@ -7,10 +7,10 @@ services:
     volumes:
       - ./questdb-data:/root/.questdb
     ports:
-      - "${QDB_REST_PORT:-9000}:9000"  # REST API
-      - "${QDB_INFLUX_PORT:-9009}:9009"  # InfluxDB Line Protocol
-      - "${QDB_PG_PORT:-8812}:8812"  # PostgreSQL wire protocol
-      - "${QDB_WEB_PORT:-9003}:9003"  # Web Console
+      - "${QUESTDB_REST_PORT:-9000}:9000"  # REST API
+      - "${QUESTDB_INFLUX_PORT:-9009}:9009"  # InfluxDB Line Protocol
+      - "${QUESTDB_PG_PORT:-8812}:8812"  # PostgreSQL wire protocol
+      - "${QUESTDB_WEB_PORT:-9003}:9003"  # Web Console
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000"]
